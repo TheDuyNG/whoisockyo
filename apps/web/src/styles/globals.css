@@ -1,0 +1,77 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    color-scheme: light;
+    --background: 40 20% 98%;
+    --foreground: 220 18% 10%;
+    --card: 0 0% 100%;
+    --card-foreground: 220 18% 10%;
+    --muted: 220 14% 95%;
+    --muted-foreground: 220 8% 43%;
+    --border: 220 13% 89%;
+    --primary: 156 72% 35%;
+    --primary-foreground: 0 0% 100%;
+    --destructive: 0 72% 51%;
+    --shadow: 220 25% 12%;
+  }
+
+  .dark {
+    color-scheme: dark;
+    --background: 228 12% 7%;
+    --foreground: 210 20% 96%;
+    --card: 228 11% 9%;
+    --card-foreground: 210 20% 96%;
+    --muted: 225 10% 14%;
+    --muted-foreground: 218 9% 62%;
+    --border: 225 10% 18%;
+    --primary: 156 65% 48%;
+    --primary-foreground: 228 14% 7%;
+    --destructive: 0 72% 58%;
+    --shadow: 0 0% 0%;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply min-h-screen bg-background font-sans text-foreground antialiased;
+    background-image:
+      radial-gradient(circle at 50% -20%, hsl(var(--primary) / 0.08), transparent 34rem),
+      linear-gradient(hsl(var(--border) / 0.12) 1px, transparent 1px),
+      linear-gradient(90deg, hsl(var(--border) / 0.12) 1px, transparent 1px);
+    background-size:
+      auto,
+      56px 56px,
+      56px 56px;
+  }
+
+  ::selection {
+    background: hsl(var(--primary) / 0.25);
+  }
+
+  :focus-visible {
+    @apply outline-none ring-2 ring-primary ring-offset-2 ring-offset-background;
+  }
+}
+
+@layer components {
+  .container-shell {
+    @apply mx-auto w-full max-w-6xl px-5 sm:px-8;
+  }
+
+  .section-space {
+    @apply py-20 sm:py-28;
+  }
+
+  .technical-label {
+    @apply font-mono text-xs font-medium uppercase tracking-[0.18em] text-primary;
+  }
+}

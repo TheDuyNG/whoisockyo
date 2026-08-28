@@ -1,0 +1,150 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum AvailabilityStatus {
+  AVAILABLE
+  LIMITED
+  UNAVAILABLE
+}
+
+enum ProjectStatus {
+  PLANNED
+  IN_PROGRESS
+  COMPLETED
+  ARCHIVED
+}
+
+enum SkillCategory {
+  LANGUAGE
+  FRONTEND
+  BACKEND
+  DATABASE
+  DEVOPS
+  TOOL
+}
+
+model AdminUser {
+  id               String    @id @default(cuid())
+  email            String    @unique
+  passwordHash     String
+  refreshTokenHash String?
+  lastLoginAt      DateTime?
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+}
+
+model Profile {
+  id                 String             @id @default(cuid())
+  key                String             @unique @default("primary")
+  name               String
+  headline           String
+  shortBio           String
+  bio                 String
+  philosophy          String             @default("")
+  currentFocus        String             @default("")
+  location            String
+  email               String
+  avatarUrl           String?
+  resumeUrl           String?
+  availabilityStatus AvailabilityStatus @default(AVAILABLE)
+  createdAt           DateTime           @default(now())
+  updatedAt           DateTime           @updatedAt
+}
+
+model Project {
+  id               String        @id @default(cuid())
+  title            String
+  slug             String        @unique
+  shortDescription String
+  description      String
+  thumbnailUrl     String?
+  repositoryUrl    String?
+  liveUrl          String?
+  technologies     String[]      @default([])
+  status           ProjectStatus @default(COMPLETED)
+  featured         Boolean       @default(false)
+  published        Boolean       @default(false)
+  displayOrder     Int           @default(0)
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+
+  @@index([published, displayOrder])
+  @@index([featured, published])
+}
+
+model Experience {
+  id           String    @id @default(cuid())
+  company      String
+  companyUrl   String?
+  position     String
+  location     String    @default("")
+  startDate    DateTime  @db.Date
+  endDate      DateTime? @db.Date
+  isCurrent    Boolean   @default(false)
+  description  String
+  technologies String[]  @default([])
+  displayOrder Int       @default(0)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  @@unique([company, position, startDate])
+  @@index([displayOrder])
+}
+
+model Skill {
+  id           String        @id @default(cuid())
+  name         String
+  category     SkillCategory
+  proficiency  Int?
+  icon         String?
+  displayOrder Int           @default(0)
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+
+  @@unique([name, category])
+  @@index([category, displayOrder])
+}
+
+model SocialLink {
+  id           String   @id @default(cuid())
+  platform     String   @unique
+  url          String
+  icon         String?
+  displayOrder Int      @default(0)
+  isVisible    Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([isVisible, displayOrder])
+}
+
+model ContactMessage {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  subject   String
+  message   String
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([isRead, createdAt])
+}
+
+model SiteSettings {
+  id                   String   @id @default(cuid())
+  key                  String   @unique @default("primary")
+  siteTitle            String
+  siteDescription      String
+  seoTitle             String
+  seoDescription       String
+  isContactFormEnabled Boolean  @default(true)
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+}
