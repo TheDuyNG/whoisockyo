@@ -67,6 +67,19 @@ async function seedDatabase(): Promise<void> {
       published: true,
       displayOrder: 1,
     },
+    {
+      title: 'Personal Finance',
+      slug: 'personal-finance',
+      shortDescription:
+        'A responsive personal finance application for tracking accounts, transactions, budgets, and monthly cash flow.',
+      description:
+        'A full-stack personal finance management application with secure per-user data isolation, account and category management, income, expense, and transfer workflows, monthly reporting, and budget tracking. The React and TypeScript frontend communicates with an ASP.NET Core API backed by PostgreSQL.',
+      technologies: ['React', 'TypeScript', 'ASP.NET Core', 'PostgreSQL', 'Vite', 'TanStack Query'],
+      status: 'IN_PROGRESS' as const,
+      featured: true,
+      published: true,
+      displayOrder: 2,
+    },
   ];
 
   for (const project of projects) {
